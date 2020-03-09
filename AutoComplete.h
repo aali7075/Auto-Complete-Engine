@@ -24,26 +24,31 @@ class AutoComplete {
 
     AutoComplete(std::string textfile);
 
-    void CreateNode(TrieNode * prefix_node);
+    TrieNode * CreateNode();
 
     int CharToInt(char letter);
 
-    TrieNode SearchTree(std::string prefix);
+    std::vector<std::pair<int,std::string>> SearchTree(TrieNode *root);
+
+    TrieNode * PrefixNode(std::string prefix);
 
     void Insert(std::string word);
+
+    bool CheckLeaf(Trie * node);
 
 
     void ParseInput(std::string input);
 
     void PrintResults();
 
+    TrieNode * get_tree(){return prefix_tree_;};
 
 
 
 
   private:
     TrieNode * prefix_tree_;
-    //std::vector<std::pair<int, std::string>> words_;
+    std::vector<std::pair<int, std::string>> words_;
     int number_returns_;
     std::string prefix_;
 

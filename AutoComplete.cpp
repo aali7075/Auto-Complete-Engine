@@ -13,8 +13,7 @@ std::ostream& operator<<(std::ostream& os, const TrieNode &node){
 }
 
 AutoComplete::AutoComplete(std::string textfile){
-  prefix_tree_= new TrieNode;
-  this->CreateNode(prefix_tree_);
+  prefix_tree_= this-> CreateNode();
   std::cout << (*prefix_tree_) << '\n';
   // std::ifstream file(textfile);
   // std::string word;
@@ -24,13 +23,14 @@ AutoComplete::AutoComplete(std::string textfile){
   // }
 }
 
-void AutoComplete::CreateNode(TrieNode * prefix_node){
-  prefix_node->is_word=false;
-  prefix_node->freq=0;
-  std::cout << "Working?" << '\n';
+TrieNode * AutoComplete::CreateNode(){
+  TrieNode *new_node=new TrieNode;
+  new_node->is_word=false;
+  new_node->freq=0;
   for(int i=0; i<26; i++){ //26 because each node has children equal to length of alphabet
-    prefix_node->children[i]=NULL;
+    new_node->children[i]=NULL;
   }
+  return new_node;
 }
 
 /**
@@ -38,41 +38,72 @@ CharToInt is a helper function that returns index for a letter.
 It starts with 'a'=0 and ends 'z'=25
 */
 int AutoComplete::CharToInt(char letter){
-  return (int)letter - 97; //-48 because ascii value of 'a'=97
+  return (int)letter - 97; //-97 because ascii value of 'a'=97
 }
 
-TrieNode AutoComplete::SearchTree(std::string prefix){
-  int prefix_length=prefix.size();
+void AutoComplete::Insert(std::string word){
+  int word_length=word.size();
   int char_int;
-  TrieNode * root=prefix_tree_; //keep track of beginning of prefix tree
-  TrieNode return_node;
+  TrieNode * current_node=prefix_tree_;
 
-  for(int i=0; i<prefix_length; i++){
-    char_int=this->CharToInt(prefix[i]);
-    std::cout << char_int << '\n';
-    prefix_tree_=prefix_tree_->children[char_int];
+  for(int i=0; i<word_length; i++){
+    char_int=this->CharToInt(word[i]);
+    if(!current_node->children[char_int]){
+    //must create node on child before changing node to child otherwise return_node points to NULL
+    current_node->children[char_int]=CreateNode();
+    }
+    current_node=current_node->children[char_int];
   }
-  return_node=(*prefix_tree_);
-  prefix_tree_=root;
-  return return_node;
+  current_node->freq++;
+  current_node->is_word=true;
 }
+
+
+
+TrieNode * AutoComplete::PrefixNode(std::string prefix){
+  int prefix_size= prefix.size();
+  TrieNode * prefix_node=prefix_tree_;
+
+  for(int i=0; i<prefix_size; i++){
+    if(!prefix_node){ // prefix doesn't exist
+      return NULL;
+    }
+    prefix_node=prefix_node->children[CharToInt(prefix[i])];
+  }
+  return prefix_node;
+}
+
+// //Maybe change toreturn to a leaf node
+// bool AutoComplete::CheckLeaf(TrieNode * tree_node){
+//
+//   for(int i=0; i<26 i++;){
+//     if(!tree_node->children[i]){
+//       return true;
+//     }
+//   }
+//   return false;
+//
+// }
 
 /**
-Search prefix tree to check if word or word part is there if not insert it
+Searches for the prefix and then uses dfs via recursion to grab all values
 */
-// void AutoComplete::Insert(std::string word){
-//
-//   // Intailzing the size outside of for loop saves compiler time from calling each time
-//   int word_size=word.size()
-//   std::string build_word
-//   for(int i=0; i<=word_size; i++){
-//       build_word+=word[i];
-//
-//   }
-// }
+
+std::vector<std::pair<int,std::string>> AutoComplete::SearchTree(TrieNode * root, std:: string word_build){
+  TrieNode * search_node=root;
+  bool check_null;
+    for(int i=0; i<26; i++){
+      if(!root->children[i]){
+        word_build+=(char)(i+97);
+        root=root->children[i];
+        if(root->is_word){
+          words_.append(std::pair<int,std::string>(root->freq,word_build));
+        }
+      }
+    }
+    return;
+
+  return words;
 
 
-// void AutoComplete::Insert(std::string word){
-//
-//   for
-// }
+}
