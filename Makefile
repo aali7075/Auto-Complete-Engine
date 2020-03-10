@@ -2,10 +2,10 @@ CXX = g++
 CXXTESTFLAGS = --coverage #for unit testing
 CXXFLAGS = -std=c++17 -Wall
 
-all: main
+all: main test
 
 clean:
-	rm main
+	rm main AutoComplete.o TextUI.o test
 
 
 main: main.cpp AutoComplete.o TextUI.o
@@ -17,5 +17,5 @@ AutoComplete.o: AutoComplete.cpp
 TextUI.o: TextUI.cpp
 	$(CXX) $(CXXFLAGS) -c TextUI.cpp
 
-# test: test.cpp
-# 	$(CXX) $(CXXFLAGS) test.cpp -o test
+test: AutoComplete.o test.cpp
+	$(CXX) $(CXXFLAGS) test.cpp AutoComplete.o -o test

@@ -1,13 +1,10 @@
-#include "TextUI.h"
-//#include "AutoComplete.h"
+//#include "TextUI.h"
+#include "AutoComplete.h"
 
 int main() {
 
   // Create a TextUI object, then continue prompting the user
   // for what they want to do until they leave the store
-  std::string query="complete ,b,0";
-  query.erase(remove(query.begin(), query.end(), ' '), query.end());
-  std::cout << "Query is " << query<<'\n';
   TextUI ui;
   std::string choice;
   while (choice != "Leave") {
@@ -15,11 +12,10 @@ int main() {
     std::cout << '\n';
     ui.RouteChoice(choice);
   }
-  //AutoComplete * test= new AutoComplete("small_corpus.txt");
-  //std::cout << test->CharToInt('b') << '\n';
-
-  // test->Insert("b");
-  // std::cout << "In main" << '\n';
+//   AutoComplete * test= new AutoComplete("small_corpus.txt");
+//
+//   test->Insert("b");
+//   std::cout << "In main" << '\n';
 //   test->Insert("ba");
 //   TrieNode * yes=test->get_tree();
 //   if(yes->children[1]->children[0]==NULL){

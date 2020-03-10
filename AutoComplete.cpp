@@ -14,7 +14,6 @@ std::ostream& operator<<(std::ostream& os, const TrieNode &node){
 
 AutoComplete::AutoComplete(std::string textfile){
   prefix_tree_= this-> CreateNode();
-  std::cout << (*prefix_tree_) << '\n';
   std::ifstream file(textfile);
   std::string word;
   while (std::getline(file, word)) {

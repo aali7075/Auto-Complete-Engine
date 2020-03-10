@@ -1,5 +1,6 @@
 #ifndef AUTOCOMPLETE_H //create header guards
 #define AUTOCOMPLETE_H
+
 #include <iostream>
 #include <string>
 #include <vector>
