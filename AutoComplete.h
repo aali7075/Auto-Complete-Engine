@@ -28,22 +28,21 @@ class AutoComplete {
 
     int CharToInt(char letter);
 
-    std::vector<std::pair<int,std::string>> SearchTree(TrieNode *root);
+    void SearchTree(TrieNode *root);
 
     TrieNode * PrefixNode(std::string prefix);
 
     void Insert(std::string word);
 
-    bool CheckLeaf(Trie * node);
 
-
-    void ParseInput(std::string input);
+    void ParseInput(const std::string input);
 
     void PrintResults();
 
     TrieNode * get_tree(){return prefix_tree_;};
 
-
+		std::vector<std::pair<int, std::string>> get_words(){return words_;};
+		void set_prefix(std::string word){prefix_=word;};
 
 
   private:

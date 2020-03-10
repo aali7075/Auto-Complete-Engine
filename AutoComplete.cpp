@@ -15,12 +15,12 @@ std::ostream& operator<<(std::ostream& os, const TrieNode &node){
 AutoComplete::AutoComplete(std::string textfile){
   prefix_tree_= this-> CreateNode();
   std::cout << (*prefix_tree_) << '\n';
-  // std::ifstream file(textfile);
-  // std::string word;
-  // while (std::getline(file, word)) {
-  //   std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-  //   std::cout << word << "\n";
-  // }
+  std::ifstream file(textfile);
+  std::string word;
+  while (std::getline(file, word)) {
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+    this->Insert(word);
+  }
 }
 
 TrieNode * AutoComplete::CreateNode(){
@@ -68,42 +68,71 @@ TrieNode * AutoComplete::PrefixNode(std::string prefix){
     if(!prefix_node){ // prefix doesn't exist
       return NULL;
     }
-    prefix_node=prefix_node->children[CharToInt(prefix[i])];
+    prefix_node=prefix_node->children[CharToInt(prefix[i])]; // go to character
   }
   return prefix_node;
 }
 
-// //Maybe change toreturn to a leaf node
-// bool AutoComplete::CheckLeaf(TrieNode * tree_node){
-//
-//   for(int i=0; i<26 i++;){
-//     if(!tree_node->children[i]){
-//       return true;
-//     }
-//   }
-//   return false;
-//
-// }
 
-/**
-Searches for the prefix and then uses dfs via recursion to grab all values
-*/
+void AutoComplete::SearchTree(TrieNode * root){
 
-std::vector<std::pair<int,std::string>> AutoComplete::SearchTree(TrieNode * root, std:: string word_build){
-  TrieNode * search_node=root;
-  bool check_null;
+    if(!root){
+      return;
+    }
+
     for(int i=0; i<26; i++){
-      if(!root->children[i]){
-        word_build+=(char)(i+97);
-        root=root->children[i];
-        if(root->is_word){
-          words_.append(std::pair<int,std::string>(root->freq,word_build));
-        }
+      if(root->children[i]!=NULL){
+        prefix_+=(char)(i+97);
+        this->SearchTree(root->children[i]);
       }
     }
+
+    if(root->is_word){
+      //std::cout << "Inside is_word if and prefiex_ is " << prefix_<<'\n';
+      words_.push_back(std::pair<int,std::string>(root->freq,prefix_));
+    }
+
+    prefix_.pop_back(); // popout last letters as we have gone through all its children
+
     return;
 
-  return words;
+
+}
 
 
+void AutoComplete::ParseInput(const std:: string input){
+  int comma_count=0;
+  std::string value="";
+  int input_size=input.size();
+  for(int i=9; i<input_size; i++){
+    if(input[i]==',' && comma_count==0){
+      prefix_=value;
+      value="";
+      continue;
+      }
+      value+=input[i];
+    }
+    number_returns_=stoi(value);
+}
+
+void AutoComplete::PrintResults(){
+  TrieNode * prefix_node=this->PrefixNode(prefix_);
+  this->SearchTree(prefix_node);
+  if(words_.empty()){
+    std::cout <<'\n';
+    return;
+  }
+  std::sort(words_.begin(), words_.end(), std::greater <>());
+
+  if(words_.size()<number_returns_ || number_returns_==0){
+      number_returns_=words_.size();
+  }
+
+  for(uint i=0; i<number_returns_-1; i++){
+    std::cout << words_[i].second <<", ";
+  }
+  std::cout << words_[number_returns_-1].second << '\n';
+
+  words_.clear();
+  return;
 }

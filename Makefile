@@ -8,14 +8,14 @@ clean:
 	rm main
 
 
-main: main.cpp AutoComplete.o
-	$(CXX) $(CXXFLAGS) main.cpp AutoComplete.o -o main
+main: main.cpp AutoComplete.o TextUI.o
+	$(CXX) $(CXXFLAGS) main.cpp AutoComplete.o TextUI.o -o main
 
 AutoComplete.o: AutoComplete.cpp
 	$(CXX) $(CXXFLAGS) -c AutoComplete.cpp
 
-# TextUI.o: TextUI.cpp
-# 	$(CXX) $(CXXFLAGS) -c TextUI.cpp
+TextUI.o: TextUI.cpp
+	$(CXX) $(CXXFLAGS) -c TextUI.cpp
 
 # test: test.cpp
 # 	$(CXX) $(CXXFLAGS) test.cpp -o test
