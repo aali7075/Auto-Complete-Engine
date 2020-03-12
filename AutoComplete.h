@@ -12,10 +12,6 @@ struct TrieNode {
 	int freq; //Frequency of the word
   bool is_word;
   TrieNode * children[26]; //26 letters in the alphabet
-	// IMPLEMENTED GREATER OVERIDE OPERATOR
-	// bool operator==(const Position &other) {
-	// 	return row == other.row && col == other.col;
-	// }
 };
 
 std::ostream& operator<<(std::ostream& os, const TrieNode &node);
