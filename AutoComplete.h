@@ -42,7 +42,12 @@ class AutoComplete {
 
     TrieNode * get_tree(){return prefix_tree_;};
 
+		int get_number_returns(){return number_returns_;};
+
+		std::string get_prefix(){return prefix_;};
+
 		std::vector<std::pair<int, std::string>> get_words(){return words_;};
+
 		void set_prefix(std::string word){prefix_=word;};
 
 

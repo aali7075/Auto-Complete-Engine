@@ -3,9 +3,6 @@
 #include <sstream> // stringstream
 #include "AutoComplete.h"
 
-/**
-  Provided code for CSCI 3010, PE 7, Fall 2019
-*/
 
 class TextUI {
   public:
@@ -15,8 +12,7 @@ class TextUI {
 
     void RouteChoice(std::string choice);
 
-    //std::string QueryCheck(std::string query);
-
+    bool CheckEngineEmpty(AutoComplete * engine);
 
 
   private:
