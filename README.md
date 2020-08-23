@@ -1,4 +1,4 @@
-# Stateless AutoComplete Challenge
+# Auto-Complete Engine
 ## Created by Aaron Li
 
 ### Design Choices
